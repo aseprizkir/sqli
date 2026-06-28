@@ -31,9 +31,9 @@ Gw kasih gambaran konsekuensi yang udah terjadi di dunia nyata, biar makin paham
 
 ---
 
-## 🔍 Teknik SQL Injection Paling "Nendang" (Top 2026)
+## 🔍 Teknik SQL Injection
 
-Nih gw kumpulin payload-payload yang paling *umum" berdasarkan pengalaman *pentest* .
+berikut beberapa contoh payload-payload yang paling *umum" berdasarkan pengalaman *pentest* .
 
 ### 1. Klasik Abadi — Login Bypass (Tanpa Password)
 Ini yang paling sering dicoba duluan, soalnya kalo berhasil, lo udah dapet akses admin cuma dalam 5 detik.
@@ -46,7 +46,7 @@ Query: SELECT * FROM users WHERE username = '' OR '1'='1' -- - AND password = ''
 -- Kondisi '1'='1' SELALU TRUE, jadi query balikin semua baris.
 -- Tanda -- (double dash) di SQL itu artinya komen, jadi sisa query (password) diabaikan.
 
-Tips 2026: Sekarang banyak WAF (Web Application Firewall) yang udah pinter nge-detect OR 1=1. Makanya lo bisa pake encoding atau case manipulation:
+Tips: Sekarang banyak WAF (Web Application Firewall) yang udah pinter nge-detect OR 1=1. Makanya coba pake encoding atau case manipulation:
 
 ```sql
 ' OR 1=1 --  →  %27%20OR%201%3D1%20--%20
@@ -80,17 +80,17 @@ SQL
 '--
 '--+-
 '--+
-kalau petik ' blank, tinggal nambahin komen --+ buat cek apakah tampil normal, kalau berbeda response berarti fix blind sqli
+kalau petik ' blank, tinggal nambahin komen --+ buat cek apakah web kembali tampil normal, kalau iya berarti fix blind sqli
 
 ```
-🔐 Cara Aman (Buat Developer)
+### 🔐 Cara Aman
 
 Buat dev yang ngerjain projek ngoding, jangan cuma ngandelin WAF doang. Ini 1 pilar utama yang wajib ada:
 
-```Parameterized Query / Prepared Statements (Wajib!)
+```
+Parameterized Query / Prepared Statements (Wajib!)
 Ini yang paling ampuh, jadi query dan data dipisah secara logic.
 
-Python
 # Contoh Python (Pake parameterized query)
 cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (user, pass))
 
@@ -98,15 +98,15 @@ Least Privilege Principle
 User database jangan dikasih akses admin/root, cukup read/write sesuai kebutuhan fitur aja.
 ```
 
-🌐 Sumber Belajar & Referensi
+### 🌐 Sumber Belajar & Referensi
 
-PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
+1.PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
 
-PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
+2.PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
 
-OWASP SQL Injection Prevention Cheat Sheet — Standar industri buat pertahanan web.
+3.OWASP SQL Injection Prevention Cheat Sheet — Standar industri buat pertahanan web.
 
-✍️ Pesan & Catatan
+### ✍️ Pesan & Catatan
 
 Di 2026, SQL Injection tetep jadi masalah utama di dunia web. Kenapa? Karena banyak web app dari startup, web pemerintah, sekolah-sekolah, atau institusi pendidikan yang dibangun dari tahun 2000-an (kode warisan) di mana mereka takut ngelakuin perubahan kode ke yang lebih aman cuma karena takut error. Padahal SQLi ini masalah yang bener-bener real.
 
