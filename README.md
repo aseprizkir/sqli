@@ -40,7 +40,7 @@ Ini yang paling sering dicoba duluan, soalnya kalo berhasil, lo udah dapet akses
 
 ```sql
 Input: ' OR '1'='1' -- -
-Query: SELECT * FROM users WHERE username = '' OR '1'='1' -- - AND password = ''
+Query Disana jadi: SELECT * FROM users WHERE username = '' OR '1'='1' -- - AND password = ''
 
 -- Penjelasan:
 -- Kondisi '1'='1' SELALU TRUE, jadi query balikin semua baris.
@@ -85,7 +85,7 @@ kalau petik ' blank, tinggal nambahin komen --+ buat cek apakah web kembali tamp
 ```
 ### 🔐 Cara Aman
 
-Buat dev yang ngerjain projek ngoding, jangan cuma ngandelin WAF doang. Ini 1 pilar utama yang wajib ada:
+Buat dev yang ngerjain projek ngoding, jangan cuma ngandelin WAF doang. Ini 2 pilar utama yang wajib ada:
 
 ```
 Parameterized Query / Prepared Statements (Wajib!)
@@ -100,11 +100,11 @@ User database jangan dikasih akses admin/root, cukup read/write sesuai kebutuhan
 
 ### 🌐 Sumber Belajar & Referensi
 
-1.PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
+ 1. PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
 
-2.PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
+ 2. PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
 
-3.OWASP SQL Injection Prevention Cheat Sheet — Standar industri buat pertahanan web.
+ 3. OWASP SQL Injection Prevention Cheat Sheet — Standar industri buat pertahanan web.
 
 ### ✍️ Pesan & Catatan
 
