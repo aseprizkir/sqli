@@ -100,7 +100,7 @@ User database jangan dikasih akses admin/root, cukup read/write sesuai kebutuhan
 
 ### 🌐 Sumber Belajar & Referensi
 
- 1. PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
+ 1. PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus bisa bahasa Inggris).
 
  2. PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
 
