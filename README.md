@@ -1,4 +1,4 @@
-# 💉 SQL Injection (SQLi) Cheat Sheet — 2026 Edition
+# 💉 SQL Injection (SQLi) Cheat Sheet
 
 > "Dari tahun 1998 sampe 2026, SQL Injection masih jadi jalan tolnya para hacker pemula buat masuk ke database."
 
@@ -6,7 +6,7 @@ Dokumentasi pribadi yang tak kumpulin dari hasil *bug hunting*, CTF, dan eksplor
 
 ---
 
-## 🧠 SQL Injection — Definisi Ulang di 2026
+## 🧠 SQL Injection — Definisi Ulang 
 
 Dulu gw kira SQL Injection tuh cuma sekedar `admin' or '1'='1` buat *bypass* login. Ternyata pas dipelajari ada banyak jenis SQL Injection, seperti:
 
@@ -18,7 +18,7 @@ Dulu gw kira SQL Injection tuh cuma sekedar `admin' or '1'='1` buat *bypass* log
 
 ---
 
-## ⚠️ Dampak Nyata SQL Injection (Bukan Cuma Teori)
+## ⚠️ Dampak Nyata SQL Injection
 
 Gw kasih gambaran konsekuensi yang udah terjadi di dunia nyata, biar makin paham kenapa kerentanan ini masuk kategori *high/critical risk*:
 
